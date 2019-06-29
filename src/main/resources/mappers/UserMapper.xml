@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- 根节点必须是mapper -->
+<!-- namespace:对应的接口文件 -->
+<mapper namespace="cn.tedu.store02.mapper.UserMapper" >
+
+	<!-- 根据用户名查询用户信息 -->
+	<!-- User findByUsername(String username); -->
+	<select id="findByUsername" resultType="cn.tedu.store02.entity.User">
+		SELECT
+			uid,username,
+			password,salt,
+			avater,is_delete AS isDelete
+		FROM
+			t_user
+		WHERE
+			username=#{username}
+	</select>
+	
+	<!--  插入用户数据 -->
+	<!-- Integer addNew(User user); -->
+	<insert id="addNew">
+		INSERT INTO t_user(
+			username,password,
+			salt,gender,
+			avater,phone,
+			email,is_delete,
+			created_user,created_time,
+			modified_user,modified_time
+		) VALUES(
+			#{username},#{password},
+			#{salt},#{gender},
+			#{avater},#{phone},
+			#{email},#{isDelete},
+			#{createdUser},#{createdTime},
+			#{modifiedUser},#{modifiedTime}
+		)
+	</insert>
+	
+	<!-- 根据用户id查询用户数据 -->
+	<!-- User findByUid(Integer uid); -->
+	<select id="findByUid" resultType="cn.tedu.store02.entity.User">
+		SELECT
+			username,phone,
+			email,gender,
+			password,salt,
+			is_delete AS isDelete
+		FROM
+			t_user
+		WHERE
+			uid=#{uid}
+	</select>
+	
+	<!--  修改密码 -->
+	<!-- Integer updatePassword(String password); -->
+	<update id="updatePassword">
+		UPDATE
+			t_user
+		SET
+			password=#{password},
+			modified_user=#{modifiedUser},
+			modified_time=#{modifiedTime}
+		WHERE
+			uid=#{uid}
+	</update>
+	
+	<!-- 修改用户信息 -->
+	<!-- Integer updateUserInfo(User user); -->
+	<update id="updateUserInfo">
+		UPDATE
+			t_user
+		SET
+			phone=#{phone},email=#{email},
+			gender=#{gender},modified_user=#{modifiedUser},
+			modified_time=#{modifiedTime}
+		WHERE
+			uid=#{uid}
+	</update>
+	
+	<!-- 修改用户头像 -->
+	<!-- Integer updateAvater(@Param("avater")String avater,
+			@Param("uid")Integer uid,
+			@Param("modifiedUser")String modifiedUser,
+			@Param("modifiedTime")Date modifiedTime); -->	
+	<update id="updateAvater">
+		UPDATE 
+			t_user
+		SET
+			avater=#{avater},modified_user=#{modifiedUser},
+			modified_time=#{modifiedTime}
+		WHERE
+			uid=#{uid}
+	</update>
+</mapper>
+
